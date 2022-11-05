@@ -4,6 +4,7 @@
     <ul>
       <user-item v-for="member in members" :key="member.id" :name="member.fullName" :role="member.role"></user-item>
     </ul>
+    <router-link to="/teams/t2">Go to Team 2</router-link>
   </section>
 </template>
 
@@ -12,6 +13,7 @@ import UserItem from '../users/UserItem.vue';
 
 export default {
   inject: ['users', 'teams'],
+  props: ['teamId'],
   components: {
     UserItem
   },
@@ -36,6 +38,10 @@ export default {
   },
   created() {
     this.loadTeamMembers(this.$route.params.teamId);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.loadTeamMembers(to.params.teamId);
+    next();
   },
   watch: {
     '$route.params.teamId': function (teamId) {
